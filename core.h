@@ -331,6 +331,7 @@ void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
 void Mat_InRangeWithScalar(Mat src, const Scalar lowerb, const Scalar upperb, Mat dst);
 void Mat_InsertChannel(Mat src, Mat dst, int coi);
 double Mat_Invert(Mat src, Mat dst, int flags);
+/* double KMeans(Mat data, int k, Mat bestLabels, int criteria, int attempts, int flags); */
 void Mat_Log(Mat src, Mat dst);
 void Mat_Magnitude(Mat x, Mat y, Mat magnitude);
 void Mat_Max(Mat src1, Mat src2, Mat dst);

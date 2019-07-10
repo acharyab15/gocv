@@ -485,6 +485,11 @@ double Mat_Invert(Mat src, Mat dst, int flags) {
     return ret;
 }
 
+/* double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags) { */
+/*     double ret = cv::kmeans(*data, k, *bestLabels, *criteria, attempts, flags); */
+/*     return ret; */
+/* } */
+
 void Mat_Log(Mat src, Mat dst) {
     cv::log(*src, *dst);
 }

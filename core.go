@@ -1238,13 +1238,39 @@ func InsertChannel(src Mat, dst *Mat, coi int) {
 
 // Invert finds the inverse or pseudo-inverse of a matrix.
 //
-// For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gad278044679d4ecf20f7622cc151aaaa2
 //
 func Invert(src Mat, dst *Mat, flags int) float64 {
 	ret := C.Mat_Invert(src.p, dst.p, C.int(flags))
 	return float64(ret)
 }
+
+// KMeansFlags for kmeans center selection
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/de1/group__core.html#ga276000efe55ee2756e0c471c7b270949
+type KMeansFlags int
+
+const (
+	// KMeansRandomCenters selects random initial centers in each attempt.
+	KMeansRandomCenters KMeansFlags = 0
+	// KMeansPPCenters uses kmeans++ center initialization by Arthur and Vassilvitskii [Arthur2007].
+	KMeansPPCenters = 1
+	// KMeansUseInitialLabels uses the user-supplied lables during the first (and possibly the only) attempt
+	// instead of computing them from the initial centers. For the second and further attempts, use the random or semi-random     // centers. Use one of KMEANS_*_CENTERS flag to specify the exact method.
+	KMeansUseInitialLabels = 2
+)
+
+// KMeans finds centers of clusters and groups input samples around the clusters.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d5/d38/group__core__cluster.html#ga9a34dc06c6ec9460e90860f15bcd2f88
+//
+// func KMeans(data Mat, k int, bestLabels *Mat, criteriaType TermCriteriaType, attempts int, flags KMeansFlags) float64 {
+// 	criteria := C.TermCriteria_New(C.int(criteriaType), 3, 0.5)
+// 	ret := C.KMeans(data.p, C.int(k), bestLabels.p, &criteria, C.int(attempts), C.int(flags))
+// 	return float64(ret)
+// }
 
 // Log calculates the natural logarithm of every array element.
 //
