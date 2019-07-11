@@ -136,6 +136,20 @@ struct Moment Moments(Mat src, bool binaryImage) {
     return mom;
 }
 
+struct Moment MomentsPoints(Contour points, bool binaryImage) {
+    std::vector<cv::Point> pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+    }
+    cv::Moments m = cv::moments(pts, binaryImage);
+    Moment mom = {m.m00, m.m10, m.m01, m.m20, m.m11, m.m02, m.m30, m.m21, m.m12, m.m03,
+                  m.mu20, m.mu11, m.mu02, m.mu30, m.mu21, m.mu12, m.mu03,
+                  m.nu20, m.nu11, m.nu02, m.nu30, m.nu21, m.nu12, m.nu03
+                 };
+    return mom;
+}
+
 void PyrDown(Mat src, Mat dst, Size size, int borderType) {
     cv::Size cvSize(size.width, size.height);
     cv::pyrDown(*src, *dst, cvSize, borderType);

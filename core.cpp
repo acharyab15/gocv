@@ -490,11 +490,11 @@ double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attemp
     return ret;
 }
 
-double KMeansPoints(Contour points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags) {
-    std::vector<cv::Point> pts;
+double KMeansPoints(Contour points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
+    std::vector<cv::Point2f> pts;
 
     for (size_t i = 0; i < points.length; i++) {
-        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+        pts.push_back(cv::Point2f(points.points[i].x, points.points[i].y));
     }
     double ret = cv::kmeans(pts, k, *bestLabels, *criteria, attempts, flags);
     return ret;

@@ -33,6 +33,7 @@ void DistanceTransform(Mat src, Mat dst, Mat labels, int distanceType, int maskS
 void Erode(Mat src, Mat dst, Mat kernel);
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask);
 struct Moment Moments(Mat src, bool binaryImage);
+struct Moment MomentsPoints(Contour points, bool binaryImage);
 void PyrDown(Mat src, Mat dst, Size dstsize, int borderType);
 void PyrUp(Mat src, Mat dst, Size dstsize, int borderType);
 struct Rect BoundingRect(Contour con);

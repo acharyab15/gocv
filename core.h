@@ -332,7 +332,7 @@ void Mat_InRangeWithScalar(Mat src, const Scalar lowerb, const Scalar upperb, Ma
 void Mat_InsertChannel(Mat src, Mat dst, int coi);
 double Mat_Invert(Mat src, Mat dst, int flags);
 double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags);
-double KMeansPoints(Contour points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags);
+double KMeansPoints(Contour points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers);
 void Mat_Log(Mat src, Mat dst);
 void Mat_Magnitude(Mat x, Mat y, Mat magnitude);
 void Mat_Max(Mat src1, Mat src2, Mat dst);
