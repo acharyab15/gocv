@@ -135,6 +135,40 @@ func CalcHist(src []Mat, channels []int, mask Mat, hist *Mat, size []int, ranges
 	C.CalcHist(cMats, chansVector, mask.p, hist.p, sizeVector, rangeVector, C.bool(acc))
 }
 
+// CalcBackProject
+//
+// For futher details, please see:
+//
+func CalcBackProject(src []Mat, channels []int, hist Mat, backProject *Mat, ranges []float64, uniform bool) {
+	cMatArray := make([]C.Mat, len(src))
+	for i, r := range src {
+		cMatArray[i] = r.p
+	}
+
+	cMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cMatArray[0]),
+		length: C.int(len(src)),
+	}
+
+	chansInts := []C.int{}
+	for _, v := range channels {
+		chansInts = append(chansInts, C.int(v))
+	}
+	chansVector := C.struct_IntVector{}
+	chansVector.val = (*C.int)(&chansInts[0])
+	chansVector.length = (C.int)(len(chansInts))
+
+	rangeFloats := []C.float{}
+	for _, v := range ranges {
+		rangeFloats = append(rangeFloats, C.float(v))
+	}
+	rangeVector := C.struct_FloatVector{}
+	rangeVector.val = (*C.float)(&rangeFloats[0])
+	rangeVector.length = (C.int)(len(rangeFloats))
+
+	C.CalcBackProject(cMats, chansVector, hist.p, backProject.p, rangeVector, C.bool(uniform))
+}
+
 // HistCompMethod is the method for Histogram comparison
 // For more information, see https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga994f53817d621e2e4228fc646342d386
 type HistCompMethod int
@@ -589,6 +623,15 @@ const (
 //
 func MatchTemplate(image Mat, templ Mat, result *Mat, method TemplateMatchMode, mask Mat) {
 	C.MatchTemplate(image.p, templ.p, result.p, C.int(method), mask.p)
+}
+
+// MeanShift
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.1/dc/d6b/group__video__track.html#ga432a563c94eaf179533ff1e83dbb65ea
+func MeanShift(probImage Mat, window *image.Rect, criteria TermCriteria) {
+	ret := C.MeanShift(probImage.p, window, criteria)
+	return ret
 }
 
 // Moments calculates all of the moments up to the third order of a polygon

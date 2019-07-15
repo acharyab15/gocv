@@ -68,6 +68,29 @@ void CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector s
         cv::calcHist(images, channels, *mask, *hist, histSize, ranges, acc);
 }
 
+void CalcBackProject(struct Mats mats, IntVector chans, Mat hist, Mat backProject, FloatVector rng, bool uniform){
+        std::vector<cv::Mat> images;
+
+        for (int i = 0; i < mats.length; ++i) {
+            images.push_back(*mats.mats[i]);
+        }
+
+        std::vector<int> channels;
+        for (int i = 0, *v = chans.val; i < chans.length; ++v, ++i) {
+            channels.push_back(*v);
+        }
+
+        std::vector<float> ranges;
+
+        float* f;
+        int i;
+        for (i = 0, f = rng.val; i < rng.length; ++f, ++i) {
+            ranges.push_back(*f);
+        }
+
+        cv::calcBackProject(images, channels, *hist, *backProject, ranges, uniform);
+}
+
 double CompareHist(Mat hist1, Mat hist2, int method) {
     return cv::compareHist(*hist1, *hist2, method);
 }
@@ -125,6 +148,11 @@ void Erode(Mat src, Mat dst, Mat kernel) {
 
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask) {
     cv::matchTemplate(*image, *templ, *result, method, *mask);
+}
+
+int MeanShift(Mat probImage, Rect rect, TermCriteria criteria) {
+    cv::Rect& refRect = (cv::Rect)rect;
+    return cv::meanShift(*probImage, refRect, *criteria);
 }
 
 struct Moment Moments(Mat src, bool binaryImage) {
