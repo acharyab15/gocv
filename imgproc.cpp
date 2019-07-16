@@ -150,10 +150,10 @@ void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask) {
     cv::matchTemplate(*image, *templ, *result, method, *mask);
 }
 
-/* int MeanShift(Mat probImage, Rect rect, TermCriteria criteria) { */
-/*     cv::Rect& refRect = (cv::Rect)rect; */
-/*     return cv::meanShift(*probImage, refRect, *criteria); */
-/* } */
+int MeanShift(Mat probImage, Rect* rect, TermCriteria criteria) {
+    cv::Rect& refRect = (cv::Rect)*rect;
+    return cv::meanShift(*probImage, refRect, *criteria);
+}
 
 struct Moment Moments(Mat src, bool binaryImage) {
     cv::Moments m = cv::moments(*src, binaryImage);

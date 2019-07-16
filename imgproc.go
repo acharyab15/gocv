@@ -629,10 +629,10 @@ func MatchTemplate(image Mat, templ Mat, result *Mat, method TemplateMatchMode, 
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.1/dc/d6b/group__video__track.html#ga432a563c94eaf179533ff1e83dbb65ea
-// func MeanShift(probImage Mat, window *image.Rect, criteria TermCriteria) {
-// 	ret := C.MeanShift(probImage.p, window, criteria)
-// 	return ret
-// }
+func MeanShift(probImage Mat, window *image.Rect, criteria TermCriteria) {
+	ret := C.MeanShift(probImage.p, window, criteria)
+	return ret
+}
 
 // Moments calculates all of the moments up to the third order of a polygon
 // or rasterized shape.
