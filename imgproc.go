@@ -135,10 +135,10 @@ func CalcHist(src []Mat, channels []int, mask Mat, hist *Mat, size []int, ranges
 	C.CalcHist(cMats, chansVector, mask.p, hist.p, sizeVector, rangeVector, C.bool(acc))
 }
 
-// CalcBackProject
+// CalcBackProject calculates the back projection of a histogram.
 //
 // For futher details, please see:
-//
+// https://docs.opencv.org/3.4/d6/dc7/group__imgproc__hist.html#ga3a0af640716b456c3d14af8aee12e3ca
 func CalcBackProject(src []Mat, channels []int, hist Mat, backProject *Mat, ranges []float64, uniform bool) {
 	cMatArray := make([]C.Mat, len(src))
 	for i, r := range src {
@@ -629,10 +629,10 @@ func MatchTemplate(image Mat, templ Mat, result *Mat, method TemplateMatchMode, 
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.1/dc/d6b/group__video__track.html#ga432a563c94eaf179533ff1e83dbb65ea
-func MeanShift(probImage Mat, window *image.Rect, criteria TermCriteria) {
-	ret := C.MeanShift(probImage.p, window, criteria)
-	return ret
-}
+// func MeanShift(probImage Mat, window *image.Rect, criteria TermCriteria) {
+// 	ret := C.MeanShift(probImage.p, window, criteria)
+// 	return ret
+// }
 
 // Moments calculates all of the moments up to the third order of a polygon
 // or rasterized shape.
