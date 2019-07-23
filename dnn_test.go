@@ -261,6 +261,63 @@ func TestTensorflow(t *testing.T) {
 	})
 }
 
+func TestBlobFromImages(t *testing.T) {
+	imgs := make([]Mat, 0)
+
+	img := IMRead("images/space_shuttle.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in BlobFromImages test")
+	}
+	defer img.Close()
+
+	imgs = append(imgs, img)
+	imgs = append(imgs, img)
+
+	blob := NewMat()
+	BlobFromImages(imgs, &blob, 1.0, image.Pt(25, 25), NewScalar(0, 0, 0, 0), false, false, MatTypeCV32F)
+	defer blob.Close()
+
+	sz := GetBlobSize(blob)
+	if sz.Val1 != 2 || sz.Val2 != 3 || sz.Val3 != 25 || sz.Val4 != 25 {
+		t.Errorf("GetBlobSize in BlobFromImages retrieved wrong values")
+	}
+}
+
+func TestImagesFromBlob(t *testing.T) {
+	imgs := make([]Mat, 0)
+
+	img := IMRead("images/space_shuttle.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid Mat in BlobFromImages test")
+	}
+	defer img.Close()
+
+	imgs = append(imgs, img)
+	imgs = append(imgs, img)
+
+	blob := NewMat()
+	defer blob.Close()
+	BlobFromImages(imgs, &blob, 1.0, image.Pt(img.Size()[0], img.Size()[1]), NewScalar(0, 0, 0, 0), false, false, MatTypeCV32F)
+
+	imgsFromBlob := make([]Mat, len(imgs))
+	ImagesFromBlob(blob, imgsFromBlob)
+
+	for i := 0; i < len(imgs); i++ {
+		func() {
+			imgFromBlob := NewMat()
+			defer imgFromBlob.Close()
+			imgsFromBlob[i].ConvertTo(&imgFromBlob, imgs[i].Type())
+			diff := NewMat()
+			defer diff.Close()
+			Compare(imgs[i], imgFromBlob, &diff, CompareNE)
+			nz := CountNonZero(diff)
+			if nz != 0 {
+				t.Error("imgFromBlob is different from img!")
+			}
+		}()
+	}
+}
+
 func TestGetBlobChannel(t *testing.T) {
 	img := NewMatWithSize(100, 100, 5+16)
 	defer img.Close()
@@ -341,6 +398,15 @@ func TestFP16BlobFromImage(t *testing.T) {
 	data := FP16BlobFromImage(img, 1.0, image.Pt(100, 100), 0, false, false)
 
 	if len(data) != 60000 {
+		t.Errorf("FP16BlobFromImage incorrect length: %v\n", len(data))
+	}
+
+	img2 := NewMatWithSize(100, 50, 5+16)
+	defer img2.Close()
+
+	data = FP16BlobFromImage(img2, 2.0, image.Pt(50, 100), -0.1, true, false)
+
+	if len(data) != 30000 {
 		t.Errorf("FP16BlobFromImage incorrect length: %v\n", len(data))
 	}
 }
