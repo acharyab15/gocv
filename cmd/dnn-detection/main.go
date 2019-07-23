@@ -48,12 +48,12 @@ func main() {
 	deviceID := os.Args[1]
 	model := os.Args[2]
 	config := os.Args[3]
-	backend := gocv.NetBackendDefault
+	backend := gocv.NetBackendOpenVINO
 	if len(os.Args) > 4 {
 		backend = gocv.ParseNetBackend(os.Args[4])
 	}
 
-	target := gocv.NetTargetCPU
+	target := gocv.NetTargetVPU
 	if len(os.Args) > 5 {
 		target = gocv.ParseNetTarget(os.Args[5])
 	}
